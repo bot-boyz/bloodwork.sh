@@ -5,22 +5,16 @@ description: Agent-native blood tests and lab work online, cash pay with no insu
 
 # bloodwork.sh
 
-> **Sandbox mode.** bloodwork.sh is in testing: orders go to Junction's sandbox lab, so no draw is booked and no
-> money moves. Card payments use Stripe's test mode (card 4242 4242 4242 4242), and wallets pay with testnet funds
-> (Tempo testnet for MPP, Base Sepolia for x402). This notice goes away when we go live.
-
-bloodwork.sh offers agent-first cash-pay (via x402, MPP, or Stripe Checkout) lab testing at Quest Diagnostics or Labcorp anywhere in the US (excepting NY, NJ, and RI). Agents can perform the full lab testing lifecycle (except consent, which the user performs over email) and receive the machine-readable results.
+bloodwork.sh offers agent-first cash-pay (via x402, MPP, or Stripe Checkout) lab testing at Quest Diagnostics or Labcorp anywhere in the US (excepting NY, NJ, and RI). Agents can perform the full lab testing lifecycle (except consent, which the user performs over email) and optionally receive the machine-readable results.
 
 ## For the agent
 
 An MCP server at `https://mcp.bloodwork.sh` (remote, streamable HTTP). Add it if its tools aren't loaded;
 in Claude and ChatGPT the user adds it as a custom connector with that URL. bloodwork.sh publishes this skill (github.com/bot-boyz/bloodwork.sh) and runs that server.
 
-While the sandbox notice above stands, tell the user their order is a test: nothing is drawn or charged.
-
 1. `search_tests` with every test you want in one call (names or lab codes, e.g. all the markers to (re)check) and their ZIP. Each test's price is what it adds; each lab's `order_fees` are paid once per order, so put everything in one order. Then `find_slots` near their ZIP if you need more times than `draws` gives.
 2. `quote` with their details and tests, and `referral_code` if they mentioned one (e.g. from a bloodwork.sh/r/ link), on their first quote only; bloodwork.sh remembers it after that, so never ask for one. Tell them the total (card, and wallet if you'd pay); nothing is charged yet. They get an email linking to the quote's page, which shows that price; their consent there approves the order.
-3. Once `get_order` shows consent, ask how they want to pay if not already known. Pay from your wallet with `order` (MPP or x402, 3% less) only if they choose that and confirm the amount, and only the quoted total; otherwise send them `handoff`'s link to pay by card themselves. If you change the quote after consent, tell them the new total and wait for their OK. If you can run shell commands but have no wallet, offer to set one up (see "A wallet" below).
+3. Once `get_order` shows consent, ask how they want to pay if not already known. Pay from your wallet with `order` (MPP or x402, 3% less) only if they choose that and confirm the amount, and only the quoted total; otherwise send them `handoff`'s link to pay by card themselves. If you change the quote after consent, tell them the new total and wait for their OK. If you can run shell commands but have no wallet, offer to set one up (see "Agent Wallets" below).
 4. They walk in at the booked time with the code from `get_order`. `reschedule` or `cancel_order` until the draw.
 5. `get_results` works only if they let you see results; they always get them by email. If it's refused, tell them they can share their results with you at bloodwork.sh/orders (it emails them a link).
 
