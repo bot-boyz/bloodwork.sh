@@ -2,10 +2,6 @@
 
 [![skills.sh](https://skills.sh/b/bot-boyz/bloodwork.sh)](https://skills.sh/bot-boyz/bloodwork.sh)
 
-> **Sandbox mode.** bloodwork.sh is in testing: orders go to Junction's sandbox lab, so no draw is booked and no
-> money moves. Card payments use Stripe's test mode (card 4242 4242 4242 4242), and wallets pay with testnet funds
-> (Tempo testnet for MPP, Base Sepolia for x402). This notice goes away when we go live.
-
 Tell your agent "test my ApoB" and it does the rest. It finds the test at Quest or Labcorp, books a draw at a center
 near you, and pays from its wallet or hands you a card checkout. You walk in, give blood, and the results come to you
 by email. Let your agent read them too, then track your numbers over time with whichever model you like.
