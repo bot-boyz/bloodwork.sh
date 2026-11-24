@@ -1,6 +1,6 @@
 ---
 name: bloodwork
-description: Agent-native blood tests and lab work online, cash pay with no insurance or doctor's visit, at Quest Diagnostics or Labcorp anywhere in the US but NY, NJ and RI, through bloodwork.sh's MCP server. Finds and prices the test, books a blood draw at a lab near the person's ZIP, pays by card or agent wallet, and reads the lab results. Use when someone wants a blood test or lab test (examples: ApoB, Lp(a), HbA1c/A1c, lipid panel, cholesterol, testosterone, TSH/thyroid, vitamin D, ferritin, CBC, CMP, etc) or a panel (examples: Lipid, Metabolic, etc), asks what a lab test costs or where to get bloodwork done, wants a Quest or Labcorp appointment, or asks about results from a bloodwork.sh order.
+description: "Agent-native blood tests and lab work online, cash pay with no insurance or doctor's visit, at Quest Diagnostics or Labcorp anywhere in the US but NY, NJ and RI, through bloodwork.sh's MCP server. Finds and prices the test, books a blood draw at a lab near the person's ZIP, pays by card or agent wallet, and reads the lab results. Use when someone wants a blood test or lab test (examples: ApoB, Lp(a), HbA1c/A1c, lipid panel, cholesterol, testosterone, TSH/thyroid, vitamin D, ferritin, CBC, CMP, etc) or a panel (examples: Lipid, Metabolic, etc), asks what a lab test costs or where to get bloodwork done, wants a Quest or Labcorp appointment, or asks about results from a bloodwork.sh order."
 ---
 
 # bloodwork.sh
