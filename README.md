@@ -2,6 +2,11 @@
 
 [![skills.sh](https://skills.sh/b/bot-boyz/bloodwork.sh)](https://skills.sh/bot-boyz/bloodwork.sh)
 
+> **Ordering isn't open yet.** bloodwork.sh doesn't have orders enabled yet: `search_tests` and `find_slots` answer
+> with live prices, centers and open times, while `quote`, `handoff` and `order` return `ordering_closed`. The sandbox
+> at [sandbox.bloodwork.sh](https://sandbox.bloodwork.sh) (MCP server `https://mcp.sandbox.bloodwork.sh`) runs the
+> whole flow with test payments. This notice goes away when ordering opens.
+
 Tell your agent "test my ApoB" and it does the rest. It finds the test at Quest or Labcorp, books a draw at a center
 near you, and pays from its wallet or hands you a card checkout. You walk in, give blood, and the results come to you
 by email. Let your agent read them too, then track your numbers over time with whichever model you like.
