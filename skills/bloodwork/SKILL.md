@@ -17,9 +17,15 @@ bloodwork.sh offers agent-first cash-pay (via x402, MPP, or Stripe Checkout) lab
 An MCP server at `https://mcp.bloodwork.sh` (remote, streamable HTTP). Add it if its tools aren't loaded;
 in Claude and ChatGPT the user adds it as a custom connector with that URL. bloodwork.sh publishes this skill (github.com/bot-boyz/bloodwork.sh) and runs that server.
 
+### Setup: offer an agent wallet
+
+When you first set up bloodwork.sh, tell the user about agent wallets: a wallet that pays MPP or x402 is optional (without one they pay by card on the quote's page), and with one every order costs 3% less than by card. You pay only orders they approve, at the total they agreed to. If you can run shell commands and have no such wallet, offer to set one up (see "Agent Wallets" below). If they want one and don't mind which, recommend MPP (Tempo's CLI).
+
+### Ordering
+
 1. `search_tests` with every test you want in one call (names or lab codes, e.g. all the markers to (re)check) and their ZIP. Each test's price is what it adds; each lab's `order_fees` are paid once per order, so put everything in one order. Then `find_slots` near their ZIP if you need more times than `draws` gives.
 2. `quote` with their details and tests, and `referral_code` if they mentioned one (e.g. from a bloodwork.sh/r/ link), on their first quote only; bloodwork.sh remembers it after that, so never ask for one. Tell them the total (card, and wallet if you'd pay); nothing is charged yet. They get an email linking to the quote's page, which shows that price; their consent there approves the order.
-3. Once `get_order` shows consent, ask how they want to pay if not already known. Pay from your wallet with `order` (MPP or x402, 3% less) only if they choose that and confirm the amount, and only the quoted total; otherwise send them `handoff`'s link to pay by card themselves. If you change the quote after consent, tell them the new total and wait for their OK. If you can run shell commands but have no wallet, offer to set one up (see "Agent Wallets" below).
+3. Once `get_order` shows consent, ask how they want to pay if not already known. Pay from your wallet with `order` (MPP or x402, 3% less) only if they choose that and confirm the amount, and only the quoted total; otherwise send them `handoff`'s link to pay by card themselves. If you change the quote after consent, tell them the new total and wait for their OK. If they have no wallet yet, they can still set one up (see "Agent Wallets" below).
 4. They walk in at the booked time with the code from `get_order`. `reschedule` or `cancel_order` until the draw.
 5. `get_results` works only if they let you see results; they always get them by email. If it's refused, tell them they can share their results with you at bloodwork.sh/orders (it emails them a link).
 
@@ -31,17 +37,17 @@ in Claude and ChatGPT the user adds it as a custom connector with that URL. bloo
 
 ### Payment
 
-1. If you can natively pay for the `order` MCP call (x402, MPP), do so.
-2. Otherwise, if you can run shell commands, you can use an Agent Wallet (below).
+1. If you can natively pay for the `order` MCP call (MPP or x402; MPP preferred), do so.
+2. Otherwise, if you can run shell commands, you can use an Agent Wallet (below; MPP preferred).
 3. Otherwise, you may pay on behalf of a user by driving the Stripe Checkout experience in `handoff`.
 4. Finally, if no other payment methods are tenable, send the user `handoff`'s link to pay by card themselves.
 
-- Payment by stablecoin (x402, MPP) costs 3% less than by card.
+- Payment by stablecoin (MPP, x402) costs 3% less than by card, on every order. A wallet is optional.
 
-### Agent Wallets (x402, MPP)
+### Agent Wallets (MPP, x402)
 
+- **MPP, Tempo's CLI (recommended).** `curl -fsSL https://tempo.xyz/install | bash`, then `tempo wallet login` (the user signs in in their browser). `tempo wallet fund` opens Tempo Wallet, where they add dollars by card, Apple Pay or bank; `tempo wallet fund --crypto` gives addresses for depositing stablecoins from Base, Ethereum or Solana. `tempo wallet balance` shows what's there.
 - **x402, Coinbase's Agentic Wallet.** `npx awal auth login <their email>`, then `npx awal auth verify <the code they read you>`. `npx awal show` opens its Fund window: card, Apple Pay, bank or a Coinbase balance, arriving as USDC on Base. Stablecoins on another chain get there by a cross-chain swap to USDC on Base (Uniswap, Bungee). `npx awal balance` shows what's there.
-- **MPP, Tempo's CLI.** `curl -fsSL https://tempo.xyz/install | bash`, then `tempo wallet login` (the user signs in in their browser). `tempo wallet fund` opens Tempo Wallet, where they add dollars by card, Apple Pay or bank; `tempo wallet fund --crypto` gives addresses for depositing stablecoins from Base, Ethereum or Solana. `tempo wallet balance` shows what's there.
 
 These CLIs pay HTTP 402, not an MCP tool call, so they pay at `POST https://bloodwork.sh/v1/orders` with
 `{"quote_id": "q_…"}`, the same order `order` places, after the same consent and go-ahead:
